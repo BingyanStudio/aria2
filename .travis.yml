@@ -1,0 +1,13 @@
+services: docker
+language: bash
+
+env:
+  - IMAGE=${IMAGE_PREFIX:-$DOCKER_USER/}aria2
+
+script:
+  - docker build -t $IMAGE .
+
+after_script:
+  - docker images
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" -e "$DOCKER_EMAIL"
+  - docker push $IMAGE
